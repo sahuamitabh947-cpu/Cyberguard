@@ -1,0 +1,524 @@
+{
+  "audio_deepfake": {
+    "algorithm": "Gradient Boosted Trees (200 trees, depth 3) on 41 features: 13 MFCC means/stds, delta-MFCC, spectral centroid/rolloff/flatness/flux, ZCR, energy dynamics, band-energy ratios",
+    "dataset": {
+      "name": "LibriSpeech clips (real, 3 speakers, augmented) vs Griffin-Lim vocoder resynthesis + espeak-ng TTS (72 clips, 6 voices)",
+      "note": "Proof-of-concept scale: real speech comes from only 3 speakers. Treat scores as one signal alongside Gemini's audio reasoning. Retrain on ASVspoof / WaveFake with: cg_train <dir> <models> audio (put WAVs in audio/real and audio/tts).",
+      "samples": 499,
+      "split": "held-out speaker and held-out TTS clips"
+    },
+    "file": "audio_deepfake.json",
+    "metrics": {
+      "gbdt": {
+        "accuracy": 0.9527027027027027,
+        "confusion": {
+          "fn": 0,
+          "fp": 7,
+          "tn": 71,
+          "tp": 70
+        },
+        "f1": 0.9523809523809523,
+        "precision": 0.9090909090909091,
+        "recall": 1.0,
+        "rocAuc": 0.9945054945054945,
+        "samples": 148,
+        "threshold": 0.5
+      }
+    },
+    "task": "Synthetic / cloned voice detection",
+    "trainedAt": "2026-09-26T09:43:26Z"
+  },
+  "image_manipulation": {
+    "algorithm": "Block-level Gradient Boosted Trees on 14 relative forensic features per 32x32 block (ELA, noise residual, gradients, JPEG grid, vs the image's own medians and neighbours) + global Gradient Boosted Trees on 20 image-level features; a stacked GBDT combines global probability with block-score aggregates (top-k, hot-block fraction, best 2x2 neighbourhood) learned from out-of-fold predictions",
+    "dataset": {
+      "images": 1680,
+      "manipulationTypes": {
+        "copy_move": 142,
+        "double_compression": 149,
+        "local_retouch_blur": 149,
+        "noise_inconsistency": 132,
+        "resample_upscale": 153,
+        "splice": 115
+      },
+      "name": "Public-domain photos (imageio + scikit-image sample images) with programmatic manipulations",
+      "note": "EXPERIMENTAL (weak signal): trained on only 21 public-domain source photos, so generalisation is limited (see metrics). Detects editing/tampering traces and localises suspicious 32x32 blocks. It is NOT trained on GAN/diffusion face deepfakes (no such dataset was reachable); fully AI-generated faces are assessed by the Gemini vision layer. To improve it, add more original photos to datasets/images/originals and rerun: cg_train <datasets> <models> image (the trainer synthesises the manipulations). A labelled real-vs-fake folder mode is not implemented yet.",
+      "sourceImages": 21,
+      "split": "held-out source images (never seen in training)"
+    },
+    "file": "image_manipulation.json",
+    "metrics": {
+      "blockTop2Only": {
+        "accuracy": 0.55,
+        "confusion": {
+          "fn": 3,
+          "fp": 141,
+          "tn": 19,
+          "tp": 157
+        },
+        "f1": 0.6855895196506551,
+        "precision": 0.5268456375838926,
+        "recall": 0.98125,
+        "rocAuc": 0.6430859375,
+        "samples": 320,
+        "threshold": 0.5
+      },
+      "globalModelOnly": {
+        "accuracy": 0.56875,
+        "confusion": {
+          "fn": 91,
+          "fp": 47,
+          "tn": 113,
+          "tp": 69
+        },
+        "f1": 0.5,
+        "precision": 0.5948275862068966,
+        "recall": 0.43125,
+        "rocAuc": 0.5598046875,
+        "samples": 320,
+        "threshold": 0.5
+      },
+      "perManipulationType": {
+        "copy_move": {
+          "flagged": 11,
+          "total": 23
+        },
+        "double_compression": {
+          "flagged": 22,
+          "total": 35
+        },
+        "local_retouch_blur": {
+          "flagged": 24,
+          "total": 35
+        },
+        "noise_inconsistency": {
+          "flagged": 12,
+          "total": 18
+        },
+        "original": {
+          "flagged": 52,
+          "total": 160
+        },
+        "resample_upscale": {
+          "flagged": 19,
+          "total": 27
+        },
+        "splice": {
+          "flagged": 9,
+          "total": 22
+        }
+      },
+      "stacked": {
+        "accuracy": 0.640625,
+        "confusion": {
+          "fn": 63,
+          "fp": 52,
+          "tn": 108,
+          "tp": 97
+        },
+        "f1": 0.6278317152103561,
+        "precision": 0.6510067114093959,
+        "recall": 0.60625,
+        "rocAuc": 0.695703125,
+        "samples": 320,
+        "threshold": 0.5
+      }
+    },
+    "task": "Image manipulation / tampering detection with localisation (splicing, copy-move, retouching, noise inconsistency, resampling, double compression)",
+    "trainedAt": "2026-09-26T09:53:21Z"
+  },
+  "log_anomaly": {
+    "algorithm": "Isolation Forest (200 trees, 12 aggregated behaviour features per entity) + learned robust-percentile envelope, alongside the rule detectors",
+    "dataset": {
+      "name": "Synthetic baseline of normal user/API-client activity (4000 entities)",
+      "note": "Unsupervised novelty detection; validated against simulated port scans, credential stuffing, exfiltration, insider bulk access and encoded-PowerShell malware.",
+      "trainSamples": 4000
+    },
+    "file": "log_anomaly.json",
+    "metrics": {
+      "syntheticValidation": {
+        "accuracy": 0.937,
+        "confusion": {
+          "fn": 108,
+          "fp": 18,
+          "tn": 1482,
+          "tp": 392
+        },
+        "f1": 0.8615384615384616,
+        "precision": 0.9560975609756097,
+        "recall": 0.784,
+        "rocAuc": 0.9925366666666666,
+        "samples": 2000,
+        "threshold": 0.5779929326669038
+      }
+    },
+    "task": "Technical threats in auth/network/API/system logs: abnormal per-user and per-IP behaviour",
+    "trainedAt": "2026-09-26T10:06:23Z"
+  },
+  "login_anomaly": {
+    "algorithm": "Isolation Forest (200 trees, 8 behavioural features) + learned robust-percentile envelope; retrainable on your own auth_events history via /ml/train/login",
+    "dataset": {
+      "name": "Synthetic baseline of normal login behaviour (800 users x 30 logins)",
+      "note": "Unsupervised: learns what normal looks like. Validated on held-out normal logins vs simulated brute-force, impossible-travel and new-device attacks. Retrain on real history once enough logins exist.",
+      "trainSamples": 24000
+    },
+    "file": "login_anomaly.json",
+    "metrics": {
+      "syntheticValidation": {
+        "accuracy": 0.985,
+        "confusion": {
+          "fn": 0,
+          "fp": 60,
+          "tn": 2940,
+          "tp": 1000
+        },
+        "f1": 0.970873786407767,
+        "precision": 0.9433962264150944,
+        "recall": 1.0,
+        "rocAuc": 0.999989,
+        "samples": 4000,
+        "threshold": 0.6084525548083186
+      }
+    },
+    "task": "Credential theft / account takeover: anomalous login behaviour",
+    "trainedAt": "2026-09-26T10:06:23Z"
+  },
+  "nids_model": {
+    "algorithm": "Gradient Boosted Trees (attack vs normal) + Random Forest (normal/DoS/Probe/R2L/U2R) + Isolation Forest trained on normal traffic (zero-day novelty)",
+    "dataset": {
+      "name": "NSL-KDD (KDDTrain+ / KDDTest+)",
+      "note": "Only the 28 header-derivable features are used (13 payload/content features excluded) so live pcap traffic yields the same vector. R2L/U2R attacks are mostly visible only in payloads, so their recall is low by design.",
+      "split": "official KDDTest+ (contains attack types absent from training)",
+      "testSamples": 22544,
+      "trainSamples": 125973
+    },
+    "file": "nids_model.json",
+    "metrics": {
+      "ensemble": {
+        "accuracy": 0.8172906316536551,
+        "confusion": {
+          "fn": 3835,
+          "fp": 284,
+          "tn": 9427,
+          "tp": 8998
+        },
+        "f1": 0.8137463260230613,
+        "precision": 0.9694031458737341,
+        "recall": 0.7011610691186784,
+        "rocAuc": 0.968354481369684,
+        "samples": 22544,
+        "threshold": 0.5
+      },
+      "gbdt": {
+        "accuracy": 0.7975514549325763,
+        "confusion": {
+          "fn": 4285,
+          "fp": 279,
+          "tn": 9432,
+          "tp": 8548
+        },
+        "f1": 0.7892890120036934,
+        "precision": 0.9683924323099581,
+        "recall": 0.666095223252552,
+        "rocAuc": 0.9697809032797237,
+        "samples": 22544,
+        "threshold": 0.5
+      },
+      "isolationForest": {
+        "accuracy": 0.794180269694819,
+        "confusion": {
+          "fn": 4448,
+          "fp": 192,
+          "tn": 9519,
+          "tp": 8385
+        },
+        "f1": 0.7832788416627744,
+        "precision": 0.9776145505421476,
+        "recall": 0.6533935946388217,
+        "rocAuc": 0.949634373389395,
+        "samples": 22544,
+        "threshold": 0.5431898710478067
+      },
+      "randomForest": {
+        "accuracy": 0.763041163946061,
+        "classes": [
+          "normal",
+          "dos",
+          "probe",
+          "r2l",
+          "u2r"
+        ],
+        "confusion": [
+          [
+            9448,
+            67,
+            187,
+            5,
+            4
+          ],
+          [
+            1373,
+            6001,
+            84,
+            0,
+            0
+          ],
+          [
+            781,
+            170,
+            1470,
+            0,
+            0
+          ],
+          [
+            2601,
+            0,
+            8,
+            272,
+            6
+          ],
+          [
+            55,
+            0,
+            0,
+            1,
+            11
+          ]
+        ],
+        "macroF1": 0.5583163562423812,
+        "perClass": [
+          {
+            "class": "normal",
+            "f1": 0.7883516208435896,
+            "precision": 0.6626455323327255,
+            "recall": 0.9729173102667078
+          },
+          {
+            "class": "dos",
+            "f1": 0.8763142523364486,
+            "precision": 0.9620070535428021,
+            "recall": 0.804639313488871
+          },
+          {
+            "class": "probe",
+            "f1": 0.7050359712230215,
+            "precision": 0.8404802744425386,
+            "recall": 0.6071871127633209
+          },
+          {
+            "class": "r2l",
+            "f1": 0.17187993680884675,
+            "precision": 0.9784172661870504,
+            "recall": 0.09421544856252165
+          },
+          {
+            "class": "u2r",
+            "f1": 0.25,
+            "precision": 0.5238095238095238,
+            "recall": 0.16417910447761194
+          }
+        ],
+        "samples": 22544
+      },
+      "randomForestBinary": {
+        "accuracy": 0.7931156848828956,
+        "confusion": {
+          "fn": 4398,
+          "fp": 266,
+          "tn": 9445,
+          "tp": 8435
+        },
+        "f1": 0.783412278257639,
+        "precision": 0.9694288012872083,
+        "recall": 0.6572897997350581,
+        "rocAuc": 0.9670870170847169,
+        "samples": 22544,
+        "threshold": 0.5
+      }
+    },
+    "task": "Network intrusion detection on connection records reconstructed from pcap / live capture",
+    "trainedAt": "2026-09-26T09:36:12Z"
+  },
+  "phishing_text": {
+    "algorithm": "TF-IDF (word 1-2 grams) + Logistic Regression (AdaGrad) + Multinomial Naive Bayes, weighted ensemble (weight chosen on a validation split)",
+    "dataset": {
+      "name": "UCI SMS Spam Collection + Enron-Spam",
+      "samples": 39290,
+      "split": "stratified 80/20",
+      "testSamples": 7857,
+      "trainSamples": 31433
+    },
+    "file": "phishing_text.json",
+    "metrics": {
+      "bySource": {
+        "email": {
+          "accuracy": 0.9889184397163121,
+          "confusion": {
+            "fn": 49,
+            "fp": 26,
+            "tn": 3305,
+            "tp": 3388
+          },
+          "f1": 0.9890526930375129,
+          "precision": 0.9923842999414177,
+          "recall": 0.9857433808553971,
+          "rocAuc": 0.9994670112546924,
+          "samples": 6768,
+          "threshold": 0.5
+        },
+        "sms": {
+          "accuracy": 0.9559228650137741,
+          "confusion": {
+            "fn": 8,
+            "fp": 40,
+            "tn": 903,
+            "tp": 138
+          },
+          "f1": 0.8518518518518519,
+          "precision": 0.7752808988764045,
+          "recall": 0.9452054794520548,
+          "rocAuc": 0.9898676622263543,
+          "samples": 1089,
+          "threshold": 0.5
+        }
+      },
+      "ensemble": {
+        "accuracy": 0.9843451699121802,
+        "confusion": {
+          "fn": 57,
+          "fp": 66,
+          "tn": 4208,
+          "tp": 3526
+        },
+        "f1": 0.9828571428571428,
+        "precision": 0.9816258351893096,
+        "recall": 0.984091543399386,
+        "rocAuc": 0.9989454243123594,
+        "samples": 7857,
+        "threshold": 0.5
+      },
+      "handWrittenPhishingSet": {
+        "accuracy": 0.8666666666666667,
+        "confusion": {
+          "fn": 1,
+          "fp": 3,
+          "tn": 12,
+          "tp": 14
+        },
+        "f1": 0.8749999999999999,
+        "precision": 0.8235294117647058,
+        "recall": 0.9333333333333333,
+        "rocAuc": 0.9511111111111111,
+        "samples": 30,
+        "threshold": 0.5
+      },
+      "logisticRegression": {
+        "accuracy": 0.9843451699121802,
+        "confusion": {
+          "fn": 57,
+          "fp": 66,
+          "tn": 4208,
+          "tp": 3526
+        },
+        "f1": 0.9828571428571428,
+        "precision": 0.9816258351893096,
+        "recall": 0.984091543399386,
+        "rocAuc": 0.9989454243123594,
+        "samples": 7857,
+        "threshold": 0.5
+      },
+      "naiveBayes": {
+        "accuracy": 0.9455262822960417,
+        "confusion": {
+          "fn": 70,
+          "fp": 358,
+          "tn": 3916,
+          "tp": 3513
+        },
+        "f1": 0.9425811644754495,
+        "precision": 0.9075174373546887,
+        "recall": 0.9804632989115266,
+        "rocAuc": 0.992912770764977,
+        "samples": 7857,
+        "threshold": 0.5
+      }
+    },
+    "task": "Phishing / scam / spam detection for emails, SMS and messages",
+    "trainedAt": "2026-09-26T09:39:35Z"
+  },
+  "url_model": {
+    "algorithm": "Gradient Boosted Trees (250 trees, depth 7, 42 lexical/brand/homograph features) + character 3-5 gram TF-IDF Logistic Regression, ensemble 0.6/0.4",
+    "dataset": {
+      "name": "faizann24 malicious-URL dataset + Phishing.Database ACTIVE sample",
+      "samples": 466354,
+      "split": "group split by registrable domain (no domain in both train and test)",
+      "testSamples": 89869,
+      "trainSamples": 376485
+    },
+    "file": "url_model.json",
+    "metrics": {
+      "charNgramLogReg": {
+        "accuracy": 0.9097241540464454,
+        "confusion": {
+          "fn": 1221,
+          "fp": 6892,
+          "tn": 58432,
+          "tp": 23324
+        },
+        "f1": 0.8518471174741148,
+        "precision": 0.7719089224252051,
+        "recall": 0.9502546343450805,
+        "rocAuc": 0.9799617779362987,
+        "samples": 89869,
+        "threshold": 0.5
+      },
+      "ensemble": {
+        "accuracy": 0.9500606438260134,
+        "confusion": {
+          "fn": 1502,
+          "fp": 2986,
+          "tn": 62338,
+          "tp": 23043
+        },
+        "f1": 0.9112587495551073,
+        "precision": 0.8852818010680394,
+        "recall": 0.9388062741902627,
+        "rocAuc": 0.9880615712488633,
+        "samples": 89869,
+        "threshold": 0.5
+      },
+      "gbdt": {
+        "accuracy": 0.9060298879480132,
+        "confusion": {
+          "fn": 2770,
+          "fp": 5675,
+          "tn": 59649,
+          "tp": 21775
+        },
+        "f1": 0.8375805365900567,
+        "precision": 0.7932604735883424,
+        "recall": 0.8871460582603381,
+        "rocAuc": 0.9667940638785781,
+        "samples": 89869,
+        "threshold": 0.5
+      },
+      "handWrittenSet": {
+        "accuracy": 0.8,
+        "confusion": {
+          "fn": 0,
+          "fp": 6,
+          "tn": 9,
+          "tp": 15
+        },
+        "f1": 0.8333333333333333,
+        "precision": 0.7142857142857143,
+        "recall": 1.0,
+        "rocAuc": 1.0,
+        "samples": 30,
+        "threshold": 0.5
+      },
+      "schemeInvarianceMismatches": 0
+    },
+    "task": "Malicious / phishing URL detection (scheme-invariant: http vs https cannot change the verdict)",
+    "trainedAt": "2026-09-26T09:42:24Z"
+  }
+}
