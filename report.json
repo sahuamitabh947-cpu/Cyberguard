@@ -1,0 +1,403 @@
+{
+  "generatedAt": "2026-09-05T20:50:45.977Z",
+  "threshold": "riskLevel >= Medium counted as predicted phishing/malicious",
+  "text": {
+    "tp": 14,
+    "fp": 0,
+    "tn": 15,
+    "fn": 1,
+    "precision": 1,
+    "recall": 0.9333333333333333,
+    "f1": 0.9655172413793104,
+    "accuracy": 0.9666666666666667,
+    "n": 30
+  },
+  "url": {
+    "tp": 11,
+    "fp": 0,
+    "tn": 15,
+    "fn": 4,
+    "precision": 1,
+    "recall": 0.7333333333333333,
+    "f1": 0.846153846153846,
+    "accuracy": 0.8666666666666667,
+    "n": 30
+  },
+  "overall": {
+    "tp": 25,
+    "fp": 0,
+    "tn": 30,
+    "fn": 5,
+    "precision": 1,
+    "recall": 0.8333333333333334,
+    "f1": 0.9090909090909091,
+    "accuracy": 0.9166666666666666,
+    "n": 60
+  },
+  "rows": {
+    "text": [
+      {
+        "id": "t01",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 38
+      },
+      {
+        "id": "t02",
+        "label": "phishing",
+        "riskLevel": "High",
+        "score": 65
+      },
+      {
+        "id": "t03",
+        "label": "phishing",
+        "riskLevel": "High",
+        "score": 67
+      },
+      {
+        "id": "t04",
+        "label": "phishing",
+        "riskLevel": "High",
+        "score": 55
+      },
+      {
+        "id": "t05",
+        "label": "phishing",
+        "riskLevel": "High",
+        "score": 62
+      },
+      {
+        "id": "t06",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 35
+      },
+      {
+        "id": "t07",
+        "label": "phishing",
+        "riskLevel": "Low",
+        "score": 20
+      },
+      {
+        "id": "t08",
+        "label": "phishing",
+        "riskLevel": "Critical",
+        "score": 84
+      },
+      {
+        "id": "t09",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 45
+      },
+      {
+        "id": "t10",
+        "label": "phishing",
+        "riskLevel": "High",
+        "score": 62
+      },
+      {
+        "id": "t11",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 50
+      },
+      {
+        "id": "t12",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 50
+      },
+      {
+        "id": "t13",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 35
+      },
+      {
+        "id": "t14",
+        "label": "phishing",
+        "riskLevel": "High",
+        "score": 62
+      },
+      {
+        "id": "t15",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 35
+      },
+      {
+        "id": "l01",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l02",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l03",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l04",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l05",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l06",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l07",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l08",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l09",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l10",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l11",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l12",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l13",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l14",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "l15",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      }
+    ],
+    "url": [
+      {
+        "id": "u01",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 37
+      },
+      {
+        "id": "u02",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 33
+      },
+      {
+        "id": "u03",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 37
+      },
+      {
+        "id": "u04",
+        "label": "phishing",
+        "riskLevel": "Low",
+        "score": 27
+      },
+      {
+        "id": "u05",
+        "label": "phishing",
+        "riskLevel": "Low",
+        "score": 27
+      },
+      {
+        "id": "u06",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 37
+      },
+      {
+        "id": "u07",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 35
+      },
+      {
+        "id": "u08",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 39
+      },
+      {
+        "id": "u09",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 37
+      },
+      {
+        "id": "u10",
+        "label": "phishing",
+        "riskLevel": "Low",
+        "score": 15
+      },
+      {
+        "id": "u11",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 37
+      },
+      {
+        "id": "u12",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 37
+      },
+      {
+        "id": "u13",
+        "label": "phishing",
+        "riskLevel": "Low",
+        "score": 15
+      },
+      {
+        "id": "u14",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 33
+      },
+      {
+        "id": "u15",
+        "label": "phishing",
+        "riskLevel": "Medium",
+        "score": 37
+      },
+      {
+        "id": "v01",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v02",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v03",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v04",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v05",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v06",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v07",
+        "label": "legitimate",
+        "riskLevel": "Low",
+        "score": 12
+      },
+      {
+        "id": "v08",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v09",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v10",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v11",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v12",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v13",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v14",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      },
+      {
+        "id": "v15",
+        "label": "legitimate",
+        "riskLevel": "Safe",
+        "score": 0
+      }
+    ]
+  }
+}

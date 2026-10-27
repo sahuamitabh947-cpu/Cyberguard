@@ -1,0 +1,12 @@
+{
+  "name": "cyberguard-evaluation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Accuracy/performance evaluation harness for CyberGuard's rule-based detection engines (PRD deliverable: accuracy/performance evaluation)",
+  "scripts": {
+    "evaluate": "node run_evaluation.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.7"
+  }
+}
